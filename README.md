@@ -43,5 +43,4 @@ When playing cartridges with battery-backed RAM (MBC1/3/5), progress is automati
 
 Place your ROM alongside the emulator or provide a full path.
 
-## License
 
