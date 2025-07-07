@@ -11,9 +11,6 @@ use winit::platform::pump_events::{EventLoopExtPumpEvents, PumpStatus};
 const EXITCODE_SUCCESS: i32 = 0;
 const EXITCODE_CPULOADFAILS: i32 = 2;
 
-#[derive(Default)]
-struct RenderOptions {}
-
 enum GBEvent {
     KeyUp(KeypadKey),
     KeyDown(KeypadKey),
@@ -229,7 +226,6 @@ fn construct_cpu(
 
 fn run_cpu(mut cpu: Box<Device>, sender: SyncSender<Vec<u8>>, receiver: Receiver<GBEvent>) {
     let periodic = timer_periodic(16);
-    let mut limit_speed = true;
 
     let waitticks = (4194304f64 / 1000.0 * 16.0).round() as u32;
     let mut ticks = 0;
