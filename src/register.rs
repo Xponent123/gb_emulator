@@ -28,7 +28,7 @@ impl Registers {
         match mode {
             GbMode::Classic => Registers {
                 a: 0x01,
-                f: C as u8 | H as u8 | Z as u8,
+                f: C as u8 | H as u8 | Z as u8, 
                 b: 0x00,
                 c: 0x13,
                 d: 0x00,
@@ -40,7 +40,7 @@ impl Registers {
             },
             GbMode::ColorAsClassic => Registers {
                 a: 0x11,
-                f: Z as u8,
+                f: Z as u8, //
                 b: 0x00,
                 c: 0x00,
                 d: 0x00,

@@ -9,9 +9,6 @@ pub struct CPU {
     pub(crate) reg: Registers,
     pub mmu: MMU,
     pub(crate) halted: bool,
-    /// Accurate emulation means emulating that when interrupts are set, IME is off, and HALT is
-    /// called, the PC fails to increment on the next byte instruction.
-    /// https://github.com/geaz/emu-gameboy/blob/master/docs/The%20Cycle-Accurate%20Game%20Boy%20Docs.pdf
     pub(crate) halt_bug: bool,
     pub(crate) ime: bool,
     pub(crate) setdi: u32,
@@ -74,7 +71,8 @@ impl CPU {
         } else {
             self.reg.pc = self.reg.pc.wrapping_add(1);
         }
-        b
+        // Return the fetched byte from memory at the current PC
+        b 
     }
 
     pub(crate) fn fetchword(&mut self) -> u16 {

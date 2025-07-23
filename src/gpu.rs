@@ -7,7 +7,8 @@ pub const SCREEN_W: usize = 160;
 pub const SCREEN_H: usize = 144;
 
 #[derive(PartialEq, Copy, Clone)]
-enum PrioType {
+
+enum PrioType { //handle sprite vs enum prioriy
     Color0,
     PrioFlag,
     Normal,
@@ -15,50 +16,50 @@ enum PrioType {
 
 #[derive(Clone, PartialEq)]
 pub struct GPU {
-    mode: u8,
-    modeclock: u32,
-    line: u8,
-    lyc: u8,
-    lcd_on: bool,
-    win_tilemap: u16,
-    win_on: bool,
-    tilebase: u16,
-    bg_tilemap: u16,
-    sprite_size: u32,
-    sprite_on: bool,
-    lcdc0: bool,
-    lyc_inte: bool,
-    m0_inte: bool,
-    m1_inte: bool,
-    m2_inte: bool,
-    scy: u8,
-    scx: u8,
-    winy: u8,
-    winx: u8,
-    wy_trigger: bool,
-    wy_pos: i32,
-    palbr: u8,
-    pal0r: u8,
-    pal1r: u8,
-    palb: [u8; 4],
-    pal0: [u8; 4],
-    pal1: [u8; 4],
-    vram: [u8; VRAM_SIZE],
-    voam: [u8; VOAM_SIZE],
-    cbgpal_inc: bool,
-    cbgpal_ind: u8,
-    cbgpal: [[[u8; 3]; 4]; 8],
-    csprit_inc: bool,
-    csprit_ind: u8,
-    csprit: [[[u8; 3]; 4]; 8],
-    vrambank: usize,
-    pub data: Vec<u8>,
-    bgprio: [PrioType; SCREEN_W],
-    pub updated: bool,
-    pub interrupt: u8,
-    pub gbmode: GbMode,
-    hblanking: bool,
-    first_frame: bool,
+    mode: u8,                        // Current LCD mode (0-3)
+    modeclock: u32,                  // Clock cycles spent in current mode
+    line: u8,                        // Current scanline (LY)
+    lyc: u8,                         // LY compare register (LYC)
+    lcd_on: bool,                    // LCD enabled flag
+    win_tilemap: u16,                // Window tilemap base address
+    win_on: bool,                    // Window enabled flag
+    tilebase: u16,                   // Tile data base address
+    bg_tilemap: u16,                 // Background tilemap base address
+    sprite_size: u32,                // Sprite height (8 or 16)
+    sprite_on: bool,                 // Sprites enabled flag
+    lcdc0: bool,                     // Background enabled flag (DMG/CGB)
+    lyc_inte: bool,                  // LYC=LY interrupt enabled
+    m0_inte: bool,                   // Mode 0 (HBlank) interrupt enabled
+    m1_inte: bool,                   // Mode 1 (VBlank) interrupt enabled
+    m2_inte: bool,                   // Mode 2 (OAM) interrupt enabled
+    scy: u8,                         // Scroll Y
+    scx: u8,                         // Scroll X
+    winy: u8,                        // Window Y position
+    winx: u8,                        // Window X position
+    wy_trigger: bool,                // Window Y trigger flag
+    wy_pos: i32,                     // Window line counter
+    palbr: u8,                       // Background palette register (DMG)
+    pal0r: u8,                       // Sprite palette 0 register (DMG)
+    pal1r: u8,                       // Sprite palette 1 register (DMG)
+    palb: [u8; 4],                   // Background palette colors (DMG)
+    pal0: [u8; 4],                   // Sprite palette 0 colors (DMG)
+    pal1: [u8; 4],                   // Sprite palette 1 colors (DMG)
+    vram: [u8; VRAM_SIZE],           // Video RAM (VRAM)
+    voam: [u8; VOAM_SIZE],           // Sprite attribute table (OAM)
+    cbgpal_inc: bool,                // CGB BG palette auto-increment flag
+    cbgpal_ind: u8,                  // CGB BG palette index
+    cbgpal: [[[u8; 3]; 4]; 8],       // CGB BG palettes (8 palettes, 4 colors, RGB)
+    csprit_inc: bool,                // CGB sprite palette auto-increment flag
+    csprit_ind: u8,                  // CGB sprite palette index
+    csprit: [[[u8; 3]; 4]; 8],       // CGB sprite palettes (8 palettes, 4 colors, RGB)
+    vrambank: usize,                 // Current VRAM bank (CGB)
+    pub data: Vec<u8>,               // Framebuffer (RGB pixel data)
+    bgprio: [PrioType; SCREEN_W],    // Per-pixel background priority for current scanline
+    pub updated: bool,               // Framebuffer updated flag
+    pub interrupt: u8,               // Interrupt request flags
+    pub gbmode: GbMode,              // Game Boy mode (DMG or CGB)
+    hblanking: bool,                 // HBlank active flag
+    first_frame: bool,               // True if first frame after LCD enabled
 }
 
 impl GPU {

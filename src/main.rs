@@ -16,23 +16,23 @@ enum GBEvent {
     KeyDown(KeypadKey),
 }
 
-#[cfg(target_os = "windows")]
-fn create_window_builder(romname: &str) -> winit::window::WindowBuilder {
-    use winit::platform::windows::WindowBuilderExtWindows;
-    return winit::window::WindowBuilder::new()
-        .with_drag_and_drop(false)
-        .with_title("RBoy - ".to_owned() + romname);
-}
+// #[cfg(target_os = "windows")]
+// fn create_window_builder(romname: &str) -> winit::window::WindowBuilder {
+//     use winit::platform::windows::WindowBuilderExtWindows;
+//     return winit::window::WindowBuilder::new()
+//         .with_drag_and_drop(false)
+//         .with_title("RBoy - ".to_owned() + romname);
+// }
 
 #[cfg(not(target_os = "windows"))]
 fn create_window_builder(romname: &str) -> winit::window::WindowBuilder {
-    return winit::window::WindowBuilder::new().with_title("RBoy - ".to_owned() + romname);
+    return winit::window::WindowBuilder::new().with_title("Game Boy - ".to_owned() + romname);
 }
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     if args.len() != 2 {
-        eprintln!("Usage: rboy <gamefile_name>");
+        eprintln!("Usage: game_boy <gamefile_name>");
         std::process::exit(1);
     }
     let filename = &args[1];
